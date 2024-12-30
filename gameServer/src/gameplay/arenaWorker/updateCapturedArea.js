@@ -43,8 +43,8 @@ export function updateCapturedArea(arenaTiles, playerId, bounds, unfillableLocat
 	// The reason for this is that we want to seed the flood fill algorithm at the top left corner of the bounds.
 	// We need to have at least one tile around the area that is not owned by the player that we try to fill for.
 	// That way the flood fill can wrap all the way around the players existing area.
-	bounds.min.subScalar(1);
-	bounds.max.addScalar(1);
+	// bounds.min.subScalar(1);
+	// bounds.max.addScalar(1);
 
 	/**
 	 * Tests whether a node should be marked as 1 (unfillable by the player),

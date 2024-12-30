@@ -5,6 +5,8 @@ import { fillRect } from "../../util/util.js";
 import { initializeMask, updateCapturedArea } from "./updateCapturedArea.js";
 import { PlayerBoundsTracker } from "./PlayerBoundsTracker.js";
 import { getMinimapPart } from "./getMinimapPart.js";
+import { Perf } from "../../util/Perf.js";
+import { oldInitializeMask, oldUpdateCapturedArea } from "./oldUpdateCapturedArea.js";
 
 /**
  * Stores which tiles have been filled and by which player.
@@ -29,6 +31,7 @@ const arenaWorkerHandlers = {
 		arenaHeight = height;
 		arenaTiles = createArenaTiles(width, height);
 		initializeMask(width, height);
+		oldInitializeMask(width, height);
 	},
 	/**
 	 * Fills the spawn area tiles around a player.
@@ -88,12 +91,31 @@ const arenaWorkerHandlers = {
 	 */
 	updateCapturedArea(playerId, otherPlayerLocations) {
 		const bounds = boundsTracker.getBounds(playerId);
+
+		// we don't want this to be repeated inside both updateCapturedArea functions
+		bounds.min.subScalar(1);
+		bounds.max.addScalar(1);
+
+		Perf.start("oldUpdateCapturedArea");
+		const _ = oldUpdateCapturedArea(
+			arenaTiles,
+			playerId,
+			bounds,
+			otherPlayerLocations,
+		);
+		Perf.end("oldUpdateCapturedArea");
+
+		Perf.start("dinoUpdateCapturedArea");
 		const { fillRects, totalFilledTileCount, newBounds } = updateCapturedArea(
 			arenaTiles,
 			playerId,
 			bounds,
 			otherPlayerLocations,
 		);
+		Perf.end("dinoUpdateCapturedArea");
+
+		Perf.print();
+
 		boundsTracker.updateBounds(playerId, newBounds);
 		for (const { rect } of fillRects) {
 			fillTilesRect(rect, playerId);
