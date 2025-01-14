@@ -187,6 +187,9 @@ export class Game {
 		} else {
 			this.#reportPlayerScore(player.getGlobalLeaderboardScore());
 		}
+		for (const p of this.#players.values()) {
+			p.freePlayerFromSets(player);
+		}
 		player.removedFromGame();
 		this.#players.delete(player.id);
 		this.#fireOnPlayerCountChange();

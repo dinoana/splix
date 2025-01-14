@@ -185,6 +185,14 @@ export class Player {
 	 */
 	#inOtherPlayerViewports = new Set();
 
+	/**
+	 * @param {Player} player
+	 */
+	freePlayerFromSets(player) {
+		player.#playersInViewport.delete(this);
+		this.#inOtherPlayerViewports.delete(player);
+	}
+
 	*inOtherPlayerViewports() {
 		yield* this.#inOtherPlayerViewports;
 	}
@@ -406,8 +414,7 @@ export class Player {
 				if (lastVertexA.x == lastVertexB.x && lastVertexA.x == pos.x) {
 					if (pos.y >= lastVertexA.y && pos.y <= lastVertexB.y) {
 						throw new Error(
-							`Assertion failed: Attempted to add a trail vertex (${pos}) in between two previous vertices. Full trail: ${
-								this.#trailVertices.join(" ")
+							`Assertion failed: Attempted to add a trail vertex (${pos}) in between two previous vertices. Full trail: ${this.#trailVertices.join(" ")
 							}`,
 						);
 					}
@@ -417,8 +424,7 @@ export class Player {
 				if (lastVertexA.y == lastVertexB.y && lastVertexA.y == pos.y) {
 					if (pos.x >= lastVertexA.x && pos.x <= lastVertexB.x) {
 						throw new Error(
-							`Assertion failed: Attempted to add a trail vertex (${pos}) in between two previous vertices. Full trail: ${
-								this.#trailVertices.join(" ")
+							`Assertion failed: Attempted to add a trail vertex (${pos}) in between two previous vertices. Full trail: ${this.#trailVertices.join(" ")
 							}`,
 						);
 					}
