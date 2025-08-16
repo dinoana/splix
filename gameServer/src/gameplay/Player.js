@@ -958,16 +958,14 @@ export class Player {
 	#removedFromGame = false;
 
 	removedFromGame() {
-		// Clear tiles first
-		this.#clearAllMyTiles();
-		for (const player of this.#inOtherPlayerViewports) {
-			player.#playerRemovedFromViewport(this);
-		}
-		for (const player of this.#playersInViewport) {
-			player.#inOtherPlayerViewports.delete(this);
-		}
-		// Set as removed after player is removed from viewport
-		this.#removedFromGame = true;
+    	this.#removedFromGame = true;
+    	this.#clearAllMyTiles();
+    	for (const player of this.#inOtherPlayerViewports) {
+        	player.#playerRemovedFromViewport(this);
+    }
+    	for (const player of this.#playersInViewport) {
+        	player.#inOtherPlayerViewports.delete(this);
+    	}
 	}
 
 	#allMyTilesCleared = false;
