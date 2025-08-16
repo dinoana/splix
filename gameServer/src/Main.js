@@ -33,6 +33,12 @@ export class Main {
 		this.game.onPlayerScoreReported((score) => {
 			this.websocketManager.notifyControlSocketsPlayerScore(score);
 		});
+
+		// DEBUG TOOL: force cleanup with garbage collector
+		// uncomment only in dev-inspect-gc mode
+		// setInterval(() => {
+		//     globalThis.gc();
+		// }, 5000)
 	}
 
 	/**

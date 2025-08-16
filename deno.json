@@ -2,6 +2,7 @@
 	"tasks": {
 		"dev": "deno run -A --watch scripts/dev.js",
 		"dev-inspect": "deno run -A --inspect scripts/dev.js",
+		"dev-inspect-gc": "deno run --unstable --v8-flags=--expose-gc -A --inspect scripts/dev.js",
 		"install-deps": "deno run -A scripts/dev.js --no-init",
 		"check": "deno run --allow-env --allow-read npm:typescript@5.2.2/tsc --noEmit -p ./jsconfig.json",
 		"build-gameserver": "deno run -A scripts/buildGameServer.js",
